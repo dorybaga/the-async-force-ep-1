@@ -3,6 +3,12 @@
 
 (function(){
 
+function findFour(id){
+  var oReq = new XMLHttpRequest();
+  oReq.addEventListener('load', getName);
+  oReq.open('GET', `http://www.swapi.co/api/people/4`);
+  oReq.send();
+}
 function getName(){
   var response = JSON.parse(this.responseText);
   var name = document.getElementById("person4Name");
@@ -12,18 +18,21 @@ function getName(){
   name.appendChild(nameBox);
 }
 
-function getFour(id){
-  var oReq = new XMLHttpRequest();
-  oReq.addEventListener('load', getName);
-  oReq.open('GET', `http://www.swapi.co/api/people/4`);
-  oReq.send();
+function findWorld(){
+  var response = JSON.parse(this.responseText);
+  var worldName = document.getElementById("person4HomeWorld");
+  var worldBox = document.createElement("div");
+  console.log(response.homeworld);
+  worldBox.innerHTML = response.name;
+  worldName.appendChild(worldBox);
+
 }
 
-function getWorld(){
-  var response = JSON.parse(this.responseText);
-  var worldBox = document.createElement("div");
-  worldBox.innerHTML = response.name;
-
+function getWorldName(id){
+  var wReq = new XMLHttpRequest();
+  wReq.addEventListener('load', findWorld);
+  wReq.open('GET', `http://www.swapi.co/api/planets/1`);
+  wReq.send();
 }
 
 function getName14(){
@@ -86,7 +95,8 @@ function getFourteen(){
 // }
 
 
-getFour(4);
+findFour(4);
+getWorldName(4);
 getFourteen(14);
 
 })();
