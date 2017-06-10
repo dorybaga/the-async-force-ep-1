@@ -9,6 +9,7 @@ function findFour(id){
   oReq.open('GET', `http://www.swapi.co/api/people/4`);
   oReq.send();
 }
+
 function getName(){
   var response = JSON.parse(this.responseText);
   var name = document.getElementById("person4Name");
@@ -24,7 +25,6 @@ function findWorld(){
   var worldBox = document.createElement("div");
   worldBox.innerHTML = response.name;
   worldName.appendChild(worldBox);
-
 }
 
 function getWorldName(id){
@@ -50,6 +50,23 @@ function getFourteen(){
   oReq2.send();
 }
 
+function nameSpecies(){
+  var response = JSON.parse(this.responseText);
+  var name = document.getElementById("person14Species");
+  var nameBox = document.createElement("div");
+  nameBox.innerHTML = response.name;
+  name.appendChild(nameBox);
+}
+
+
+function findSpecies(){
+  var sReq = new XMLHttpRequest();
+  sReq.addEventListener('load', nameSpecies);
+  sReq.open('GET', `http://www.swapi.co/api/species/1/`);
+  sReq.send();
+}
+
+
 function reqListener(){
   var res = JSON.parse(this.responseText);
   var pRes = JSON.parse(this.responseText);
@@ -60,6 +77,7 @@ function reqListener(){
     // for film titles...
     var titleBox = document.getElementById("filmList");
     var filmName = document.createElement("h2");
+    filmName.className = filmName;
     filmName.innerHTML = res.results[i].title;
     titleBox.appendChild(filmName);
 
@@ -68,9 +86,9 @@ function reqListener(){
       getPlanet(filmName, res.results[i].planets[p], function(domEl, name){
         // console.log("planet name is " + name);
         // console.log("callback", domEl);
-        var planetBox = document.createElement("li");
+        var planetBox = document.createElement("div");
         domEl.appendChild(planetBox);
-        var planetName = document.createElement("li");
+        var planetName = document.createElement("ul");
         planetName.innerHTML = name;
         planetBox.appendChild(planetName);
       });
@@ -98,5 +116,6 @@ function getPlanet(domEl, url, callback){
 findFour(4);
 getWorldName(4);
 getFourteen(14);
+findSpecies(14);
 
 })();
