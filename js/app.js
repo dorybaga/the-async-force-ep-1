@@ -22,7 +22,6 @@ function findWorld(){
   var response = JSON.parse(this.responseText);
   var worldName = document.getElementById("person4HomeWorld");
   var worldBox = document.createElement("div");
-  console.log(response.homeworld);
   worldBox.innerHTML = response.name;
   worldName.appendChild(worldBox);
 
@@ -51,48 +50,49 @@ function getFourteen(){
   oReq2.send();
 }
 
-// function reqListener(){
-//   var res = JSON.parse(this.responseText);
-//   var pRes = JSON.parse(this.responseText);
+function reqListener(){
+  var res = JSON.parse(this.responseText);
+  var pRes = JSON.parse(this.responseText);
 
-//   for (var i =0; i < res.results.length; i++){
-//     // console.log(res.results[i]);
+  for (var i =0; i < res.results.length; i++){
+    // console.log(res.results[i]);
 
-//     // for film titles...
-//     var filmName = document.createElement("li");
-//     filmName.innerHTML = res.results[i].title;
-//     titleBox.appendChild(filmName);
+    // for film titles...
+    var titleBox = document.getElementById("filmList");
+    var filmName = document.createElement("h2");
+    filmName.innerHTML = res.results[i].title;
+    titleBox.appendChild(filmName);
 
-//     // for planet names...
-//     for (var p = 0; p < pRes.results[i].planets.length; p++){
-//       getPlanet(res.results[i].planets[p], function(name){
-//         // console.log("planet name is " + name);
+    // for planet names...
+    for (var p = 0; p < pRes.results[i].planets.length; p++){
+      getPlanet(filmName, res.results[i].planets[p], function(domEl, name){
+        // console.log("planet name is " + name);
+        // console.log("callback", domEl);
+        var planetBox = document.createElement("li");
+        domEl.appendChild(planetBox);
+        var planetName = document.createElement("li");
+        planetName.innerHTML = name;
+        planetBox.appendChild(planetName);
+      });
+    }
+  }
+}
 
-//         var planetBox = document.createElement("li");
-//         filmName.appendChild(planetBox);
-//         var planetName = document.createElement("li");
-//         planetName.innerHTML = name;
-//         planetBox.appendChild(planetName);
-//       });
-//     }
-//   }
-// }
 
-// var titleBox = document.getElementById("filmList");
+var oReq = new XMLHttpRequest();
+  oReq.addEventListener('load', reqListener);
+  oReq.open('GET', `http://www.swapi.co/api/films`);
+  oReq.send();
 
-// var oReq = new XMLHttpRequest();
-//   oReq.addEventListener('load', reqListener);
-//   oReq.open('GET', `http://www.swapi.co/api/films`);
-//   oReq.send();
-
-// function getPlanet(url, callback){
-//   var pReq = new XMLHttpRequest();
-//   pReq.addEventListener('load', function(){
-//     callback(JSON.parse(this.responseText).name);
-//   });
-//   pReq.open('GET', url);
-//   pReq.send();
-// }
+function getPlanet(domEl, url, callback){
+  var pReq = new XMLHttpRequest();
+  // console.log("in getPlanet", domEl);
+  pReq.addEventListener('load', function(){
+    callback(domEl, JSON.parse(this.responseText).name);
+  });
+  pReq.open('GET', url);
+  pReq.send();
+}
 
 
 findFour(4);
